@@ -8,6 +8,7 @@ import 'swiper/css/navigation';
 import { Pagination, Navigation } from 'swiper/modules';
 import { useState } from 'react';
 import './style.css'
+import objects from '../../assets/OBJECTS.png'
 const Navbar = () => {
 
     const place = [
@@ -55,7 +56,10 @@ const Navbar = () => {
             <div className='bg-black text-white bg-opacity-60'>
                 <div className="navbar">
                     <div className="flex-1">
-                        <a className="btn btn-ghost bebas-title text-xl font-medium">Travel<span className="text-orange-600">Tide</span></a>
+                        <div className='flex'>
+                            <img src={objects} className='w-' alt="" />
+                            <a className="btn btn-ghost bebas-title text-xl font-medium">Travel<span className="text-orange-600">Tide</span></a>
+                        </div>
                     </div>
                     <div className="flex-none font-medium">
                         <ul className="menu flex items-center justify-center text-md gap-5 menu-horizontal px-1">
