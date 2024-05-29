@@ -17,13 +17,13 @@ const Choose = () => {
                     <h1 className='text-xl my-2 font-bold'>World Class Service</h1>
                     <p className='text-gray-500'>Enjoy unparalleled hospitality with our exceptional amenities, attentive staff, and personalized experiences for a truly memorable stay.</p>
                 </div>
-                <div className='bg-blue-100 p-4 w-[500px] h-56 rounded-lg'>
+                
+            </div>
+            <div className='bg-blue-100 p-4 mx-auto my-10 w-[500px] h-56 rounded-lg'>
                     <img className='w-16 bg-[#F9A51A] p-2 rounded' src={img2} alt="" />
                     <h1 className='text-xl my-2 font-bold'>Best Price Guarantee</h1>
                     <p className='text-gray-500'>Get the lowest rates with our unbeatable price match promise, ensuring you always book the best deal.</p>
                 </div>
-            </div>
-
         </div>
     );
 };
