@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import { Link } from 'react-router-dom';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
@@ -10,6 +9,7 @@ import { useContext, useState } from 'react';
 import './style.css'
 import objects from '../../assets/OBJECTS.png'
 import { AuthContext } from '../AuthProvider/AuthProvider';
+
 const Navbar = () => {
     const { user, logOutUser } = useContext(AuthContext)
     const place = [
@@ -17,8 +17,7 @@ const Navbar = () => {
             id: 1,
             title: "Cox's Bazar",
             description: "Cox's Bazar is a coastal town in southeastern Bangladesh, known for having the longest natural sea beach in the world. It is a popular tourist destination, attracting visitors with its stunning beach, beautiful sunsets, and vibrant local culture. The town also offers various activities such as surfing, swimming, and boat rides to nearby islands.",
-            bannerImage: "https://cloud-1de12d.b-cdn.net/media/iW=715&iH=462&oX=0&oY=0&cW=715&cH=462/c7971ee32d599058b59e224d72294799/image.jpg",
-            rectangleImage: "https://example.com/images/coxs-bazar-rectangle.jpg"
+            bannerImage: "https://cloud-1de12d.b-cdn.net/media/iW=715&iH=462&oX=0&oY=0&cW=715&cH=462/c7971ee32d599058b59e224d72294799/image.jpg"
         },
         {
             id: 2,
@@ -31,26 +30,41 @@ const Navbar = () => {
             id: 3,
             title: "Sundarbans",
             description: "The Sundarbans is the largest mangrove forest in the world, located in the delta region of Bangladesh and India. Known for its unique ecosystem, the Sundarbans is home to the Bengal tiger, spotted deer, and various species of birds, reptiles, and marine life. It is a UNESCO World Heritage site and offers opportunities for wildlife spotting, boat tours through the dense mangrove channels, and exploration of its rich biodiversity.",
-            bannerImage: "https://www.sundarbantigerroarresort.com/wp-content/uploads/2020/10/Sundarban-Tiger-Roar-5.jpg",
-            rectangleImage: "https://example.com/images/sundarbans-rectangle.jpg"
+            bannerImage: "https://www.sundarbantigerroarresort.com/wp-content/uploads/2020/10/Sundarban-Tiger-Roar-5.jpg"
         },
         {
             id: 4,
             title: "Saint Martin's Island",
             description: "Saint Martin's Island is a small island in the northeastern part of the Bay of Bengal, known for its clear blue waters, coral reefs, and serene beaches. It is the only coral island in Bangladesh and offers a tranquil escape with activities like snorkeling, scuba diving, and exploring the vibrant marine life. The island's laid-back atmosphere, fresh seafood, and beautiful landscapes make it a favorite among travelers seeking relaxation.",
-            bannerImage: "https://a.cdn-hotels.com/gdcs/production105/d283/fe692f6d-a1b6-47c6-b2c0-39056ed2d7b7.jpg",
-            rectangleImage: "https://example.com/images/saint-martins-rectangle.jpg"
+            bannerImage: "https://a.cdn-hotels.com/gdcs/production105/d283/fe692f6d-a1b6-47c6-b2c0-39056ed2d7b7.jpg"
         },
         {
             id: 5,
             title: "Rangamati",
             description: "Rangamati is a district in southeastern Bangladesh, renowned for its picturesque landscapes, lakes, and indigenous culture. Nestled among the hills of the Chittagong Hill Tracts, Rangamati offers breathtaking views of Kaptai Lake, lush forests, and serene waterfalls. Visitors can engage with the local indigenous communities, explore the Hanging Bridge, and enjoy boating on the tranquil lake. The area's natural beauty and cultural diversity provide a unique and enriching experience.",
-            bannerImage: "https://www.musafir.com.bd/images/places/Sajek-Valley.jpg",
-            rectangleImage: "https://example.com/images/rangamati-rectangle.jpg"
+            bannerImage: "https://www.musafir.com.bd/images/places/Sajek-Valley.jpg"
         }
     ];
 
-    const [activeId, setActiveId] = useState(place[0])
+    const [activeId, setActiveId] = useState(place[0]);
+
+    const RightArrow = () => {
+        const activeIndex = place.findIndex(place => place.id === activeId.id);
+        if (activeIndex !== -1 && activeIndex < place.length - 1) {
+            setActiveId(place[activeIndex + 1]);
+        } else {
+            console.log("No next item found or activeId.id is not in the place array");
+        }
+    };
+
+    const LeftArrow = () => {
+        const activeIndex = place.findIndex(place => place.id === activeId.id);
+        if (activeIndex > 0) {
+            setActiveId(place[activeIndex - 1]);
+        } else {
+            console.log("No previous item found or activeId.id is not in the place array");
+        }
+    };
 
     return (
         <div className='bg-black' style={{ backgroundImage: `url(${activeId.bannerImage})`, backgroundRepeat: 'no-repeat', backgroundSize: 'cover', backgroundPosition: 'center' }}>
@@ -65,8 +79,8 @@ const Navbar = () => {
                     </div>
                     <div className="flex-none font-medium">
                         <ul className="menu flex items-center justify-center text-md gap-5 menu-horizontal px-1">
-                            <Link to="#">Destination</Link>
-                            <Link to="#">Contact</Link>
+                            <Link to="/hotels">Destination</Link>
+                            <Link to="contact-us">Contact</Link>
                             {
                                 user ? <div className='flex items-center justify-center gap-4'>
                                     {
@@ -123,8 +137,8 @@ const Navbar = () => {
                                     </div>
                                 </SwiperSlide>
                             ))}
-                            <div className="swiper-button-next"></div>
-                            <div className="swiper-button-prev"></div>
+                            <div onClick={RightArrow} className="swiper-button-next"></div>
+                            <div onClick={LeftArrow} className="swiper-button-prev"></div>
                         </Swiper>
 
                     </div>

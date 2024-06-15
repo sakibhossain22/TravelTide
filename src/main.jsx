@@ -12,6 +12,11 @@ import Error from './Components/Error/Error';
 import Register from './Components/Register/Register';
 import BookingDate from './Components/BookingDate/BookingDate';
 import AuthProvider from './Components/AuthProvider/AuthProvider';
+import Hotels from './Components/Hotels/Hotels';
+import ContactUs from './Components/ContactUs/ContactUs';
+import HotelDetails from './Components/HotelDetails/HotelDetails';
+import Cart from './Components/Cart/Cart';
+import PrivateRoute from './Components/PrivateRoute/PrivateRoute';
 
 const router = createBrowserRouter([
   {
@@ -36,6 +41,22 @@ const router = createBrowserRouter([
   {
     path: '/booking-date',
     element: <BookingDate></BookingDate>
+  },
+  {
+    path: '/cart',
+    element : <PrivateRoute><Cart></Cart></PrivateRoute>
+  },
+  {
+    path : '/hotels',
+    element : <Hotels></Hotels>
+  },
+  {
+    path : '/hotel/:uniqueId',
+    element : <HotelDetails></HotelDetails>
+  },
+  {
+    path : '/contact-us',
+    element : <ContactUs></ContactUs>
   }
 ]);
 
