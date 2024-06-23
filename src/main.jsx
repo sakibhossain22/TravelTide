@@ -4,7 +4,12 @@ import './index.css'
 import {
   createBrowserRouter,
   RouterProvider,
-} from "react-router-dom";
+} from "react-router-dom"; import {
+  useQueryClient,
+  QueryClient,
+  QueryClientProvider,
+} from '@tanstack/react-query'
+
 import MainLayout from './Components/MainLayout/MainLayout';
 import Home from './Components/Home/Home';
 import Login from './Components/Login/Login';
@@ -17,6 +22,7 @@ import ContactUs from './Components/ContactUs/ContactUs';
 import HotelDetails from './Components/HotelDetails/HotelDetails';
 import Cart from './Components/Cart/Cart';
 import PrivateRoute from './Components/PrivateRoute/PrivateRoute';
+const queryClient = new QueryClient()
 
 const router = createBrowserRouter([
   {
@@ -44,27 +50,29 @@ const router = createBrowserRouter([
   },
   {
     path: '/cart',
-    element : <PrivateRoute><Cart></Cart></PrivateRoute>
+    element: <PrivateRoute><Cart></Cart></PrivateRoute>
   },
   {
-    path : '/hotels',
-    element : <Hotels></Hotels>
+    path: '/hotels',
+    element: <Hotels></Hotels>
   },
   {
-    path : '/hotel/:uniqueId',
-    element : <HotelDetails></HotelDetails>
+    path: '/hotel/:uniqueId',
+    element: <HotelDetails></HotelDetails>
   },
   {
-    path : '/contact-us',
-    element : <ContactUs></ContactUs>
+    path: '/contact-us',
+    element: <ContactUs></ContactUs>
   }
 ]);
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <AuthProvider>
-      <RouterProvider router={router} />
-    </AuthProvider>
+    <QueryClientProvider client={queryClient}>
+      <AuthProvider>
+        <RouterProvider router={router} />
+      </AuthProvider>
+    </QueryClientProvider>
   </React.StrictMode>,
 )
 

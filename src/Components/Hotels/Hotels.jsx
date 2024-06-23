@@ -8,6 +8,7 @@ import SharedNav from "../SharedNav/SharedNav";
 const Hotels = () => {
     const { user, logOutUser } = useContext(AuthContext)
     const location = useLocation()
+    console.log(location);
     const axiosSecure = useAxiosSecure()
     const [hotels, setHotels] = useState()
 
@@ -42,20 +43,31 @@ const Hotels = () => {
             {/* Nav */}
             <SharedNav></SharedNav>
             {/* Hotels */}
-            <div>
+            <div className="my-4">
                 {/* map the hotels data */}
                 {
                     location?.state?.select2 && <h1 className="text-xl mb-3">Hotels In <span className="font-bold">{location.state.select2}</span></h1>
                 }
-                <div className="mx-5">
+                <div className="mx-5 grid gap-10 grid-cols-2 items-center justify-between">
                     {
                         hotels?.map(hotel => {
                             return <div key={hotel._id}>
-                                <div className="flex gap-4">
+                                <div className="border rounded-md">
                                     <div>
-                                        <img className="rounded mb-6 h-72 w-[500px]" src={hotel?.imageLink} alt="" />
+                                        <img className="rounded mb-3 h-80 w-full" src={hotel?.imageLink} alt="" />
                                     </div>
-                                    <div>
+                                    <div className="px-2">
+                                        <div className="border-b">
+                                            <div className="flex justify-around gap-4 mb-3">
+                                                {
+                                                    hotel?.amenities?.map((item, idx) => {
+                                                        return <div key={idx} className="bg-red-400 rounded px-2 text-white text-sm text-center">
+                                                            <span className="font-semibold"><span></span>{item}</span>
+                                                        </div>
+                                                    })
+                                                }
+                                            </div>
+                                        </div>
                                         <h1 className="font-bold text-xl mb-4">{hotel?.title}</h1>
                                         <div className="mb-2">
                                             <span> <span className="font-semibold">Guests : </span>{hotel?.guests}</span>
@@ -63,27 +75,15 @@ const Hotels = () => {
                                             <span> <span className="font-semibold">Beds : </span>{hotel?.beds}</span>
                                             <span> <span className="font-semibold">Baths : </span>{hotel?.baths}</span>
                                         </div>
-                                        <div>
 
-                                            <div className="flex gap-4">
-                                                {
-                                                    hotel?.amenities?.map((item, idx) => {
-                                                        return <div key={idx} className="mb-4">
-                                                            <span className="font-semibold"><span className="mr-2 border rounded-full px-3 py-1">{idx + 1}</span>{item}</span>
-                                                        </div>
-                                                    })
-                                                }
-                                            </div>
-                                        </div>
-                                        <div className="flex items-center gap-3">
-                                            <img className="w-5" src={star} alt="" />
-                                            <span>{hotel?.rating} / {hotel?.reviews}</span>
+                                        <div>
+                                            <span className="text-xl"><span className="font-bold">Price : </span><span className="font-semibold">{hotel?.price}</span></span>
                                         </div>
                                         <h1 className="my-4 text-gray-600">{hotel?.description.slice(0, 124)}</h1>
                                         <div className="my-4 flex gap-3">
-                                            <button className=" hover:bg-orange-300 bg-orange-400 px-6 py-2 rounded text-white font-bold">Book Now</button>
-                                            <Link to={`/hotel/${hotel?.uniqueId}`}>
-                                                <button className=" hover:bg-blue-300 bg-blue-400 px-10 py-2 rounded text-white font-bold">Details</button>
+                                            <button className="w-full hover:bg-orange-300 bg-orange-400 px-6 py-2 rounded text-white font-bold">Book Now</button>
+                                            <Link state={location?.state} to={`/hotel/${hotel?.uniqueId}`}>
+                                                <button className="w-full hover:bg-blue-300 bg-blue-400 px-10 py-2 rounded text-white font-bold">Details</button>
                                             </Link>
                                         </div>
                                     </div>

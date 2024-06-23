@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import useAxiosSecure from "../AxiosSecure/useAxiosSecure";
 import star from '../../assets/star.png';
 import { FaBath, FaWifi } from "react-icons/fa";
@@ -9,10 +9,14 @@ import { BiUser } from "react-icons/bi";
 import { MdRoofing } from "react-icons/md";
 import SharedNav from "../SharedNav/SharedNav";
 import { AuthContext } from "../AuthProvider/AuthProvider";
+import Swal from "sweetalert2";
+import moment from "moment";
 
 const HotelDetails = () => {
     const { user, logOutUser } = useContext(AuthContext);
-
+    const location = useLocation()
+    const {toDate, fromDate } = location.state || {}
+    console.log(toDate, fromDate);
     const axiosSecure = useAxiosSecure();
     const { uniqueId } = useParams();
     const [hotel, setHotel] = useState(null);
@@ -36,7 +40,7 @@ const HotelDetails = () => {
     const priceNumber = parseFloat(hotelPrice.price);
     const discountedPrice = priceNumber - (priceNumber * (hotelPrice.discount / 100));
 
- 
+
     useEffect(() => {
         const fetchHotelDetails = async () => {
             try {
@@ -64,15 +68,43 @@ const HotelDetails = () => {
     }, [axiosSecure]);
 
     const handleBookRoom = async (room) => {
-        const roomData = {...room, user : user?.email}
-        console.log(roomData);
-        
-    }
+        const roomData = { ...room,toDate : toDate, fromDate : fromDate , user: user?.email, orderDate : moment().format('ll') };
+        try {
+            const response = await axiosSecure.post('/cart', roomData);
+            console.log(response.data);
+            if (response?.data?.insertedId) {
+                return Swal.fire({
+                    icon: "success",
+                    title: "Successfully Added To Cart",
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+            }
+        } catch (error) {
+            console.error('Error booking room:', error);
+            if(error.response.status === 400) {
+                return Swal.fire({
+                    icon: "error",
+                    title: "Your Already Booked This Room",
+                    showConfirmButton: false,
+                    timer: 1500
+                  });
+            } else {
+                return Swal.fire({
+                    icon: "error",
+                    title: error.message,
+                    showConfirmButton: false,
+                    timer: 1500
+                  });
+            }
+        }
+    };
+
 
     return (
         <div className="min-h-screen bg-gray-100">
-        {/* Nav */}
-        <SharedNav></SharedNav>
+            {/* Nav */}
+            <SharedNav></SharedNav>
             {/* Hotel Details */}
             <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-3">
                 <div className="">
@@ -191,7 +223,7 @@ const HotelDetails = () => {
                                     </div>
                                 </div>
                                 <div>
-                                    <button onClick={()=> handleBookRoom(hotel)} className="bg-[#FF5733] w-full my-2 py-5 text-white px-12 text-xl  rounded-lg hover:bg-[#FF8C66] transition duration-300 ease-in-out">Book Now</button>
+                                    <button onClick={() => handleBookRoom(hotel)} className="bg-[#FF5733] w-full my-2 py-5 text-white px-12 text-xl  rounded-lg hover:bg-[#FF8C66] transition duration-300 ease-in-out">Book Now</button>
                                 </div>
                             </div>
 
