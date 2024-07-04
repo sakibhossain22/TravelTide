@@ -2,6 +2,7 @@ import axios from "axios";
 import { Navigate } from "react-router-dom";
 const axiosSecure = axios.create({
     baseURL: `http://localhost:5000`
+    // baseURL: `https://travel-tide-backend.vercel.app`
 })
 const useAxiosSecure = () => {
 

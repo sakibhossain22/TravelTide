@@ -48,7 +48,7 @@ const Hotels = () => {
                 {
                     location?.state?.select2 && <h1 className="text-xl mb-3">Hotels In <span className="font-bold">{location.state.select2}</span></h1>
                 }
-                <div className="mx-5 grid gap-10 grid-cols-2 items-center justify-between">
+                <div className="mx-5 grid gap-10 lg:grid-cols-2 md:grid-cols-2 items-center justify-between">
                     {
                         hotels?.map(hotel => {
                             return <div key={hotel._id}>

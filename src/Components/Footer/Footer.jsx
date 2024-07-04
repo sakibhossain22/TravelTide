@@ -9,7 +9,7 @@ const Footer = () => {
                     <p className=" bebas-title text-xl font-medium">Travel<span className="text-orange-600"> Tide</span></p>
                 </div>
                 <div className='flex flex-col items-center justify-center gap-4'>
-                    <p>Enjoy personalized services and exceptional hospitality.</p>
+                    <p className='text-center'>Enjoy personalized services and exceptional hospitality.</p>
                     <img src={social} alt="" />
                 </div>
             </div>

@@ -45,7 +45,10 @@ const Navbar = () => {
             bannerImage: "https://www.musafir.com.bd/images/places/Sajek-Valley.jpg"
         }
     ];
-
+    const [menuOpen, setMenuOpen] = useState(false);
+    const toggleMenu = () => {
+        setMenuOpen(!menuOpen);
+    };
     const [activeId, setActiveId] = useState(place[0]);
 
     const RightArrow = () => {
@@ -70,46 +73,106 @@ const Navbar = () => {
         <div className='bg-black' style={{ backgroundImage: `url(${activeId.bannerImage})`, backgroundRepeat: 'no-repeat', backgroundSize: 'cover', backgroundPosition: 'center' }}>
             {/* Navbar */}
             <div className='bg-black text-white bg-opacity-60'>
-                <div className="navbar">
-                    <div className="flex-1">
-                        <div className='flex'>
-                            <img src={objects} className='w-' alt="" />
-                            <a className="btn btn-ghost bebas-title text-xl font-medium">Travel<span className="text-orange-600">Tide</span></a>
+                <nav className="">
+                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                        <div className="flex justify-between h-16 items-center">
+                            <div className="flex items-center">
+                                <img src={objects} className="h-10 w-10" alt="Logo" />
+                                <a href="/" className="ml-2 flex items-center text-2xl font-bold ">Travel<span className="text-orange-600">Tide</span></a>
+                            </div>
+                            <div className="hidden lg:flex items-center gap-5 ml-auto text-md font-medium">
+                                <Link to="/hotels" className=" hover:text-orange-600">Destinations</Link>
+                                <Link to="/contact-us" className=" hover:text-orange-600">Contact</Link>
+                                {user ? (
+                                    <div className="flex items-center gap-4">
+                                        {user.photoURL ? (
+                                            <div className="flex items-center gap-2">
+                                                {/* Cart Icon */}
+                                                <div className="dropdown dropdown-end">
+                                                    <Link to={user ? '/cart' : '/login'}>
+                                                        <div tabIndex={0} role="button" className="btn btn-ghost btn-circle">
+                                                            <div className="indicator">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
+                                                                {/* <span className="badge badge-sm indicator-item">8</span> */}
+                                                            </div>
+                                                        </div>
+                                                    </Link>
+
+                                                </div>
+                                                {/* User Name */}
+                                                <span className="">{user.displayName.slice(0, 13)}</span>
+                                                {/* User Photo and Dropdown */}
+                                                <div className="dropdown dropdown-end">
+                                                    <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
+                                                        <div className="w-10 rounded-full">
+                                                            <img alt="User Image" src={user?.photoURL} />
+                                                        </div>
+                                                    </div>
+                                                    <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
+                                                        <li>
+                                                            <a className="justify-between">Profile</a>
+                                                        </li>
+                                                        <li onClick={() => logOutUser()}><a>Logout</a></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        ) : (
+                                            <div className="flex items-center gap-2">
+                                                <span className="uppercase px-2 py-1 w-8 bg-orange-400 rounded-full text-center text-gray-800">{user.displayName?.slice(0, 1)}</span>
+                                                <span className="text-gray-800">{user.displayName}</span>
+                                            </div>
+                                        )}
+
+                                    </div>
+                                ) : (
+                                    <Link to="/login" className="bg-[#F9A51A] text-black px-4 rounded py-1 hover:bg-[#F8B824] transition duration-300 ease-in-out">Login</Link>
+                                )}
+                            </div>
+                            <div className="lg:hidden flex items-center">
+                                <button onClick={toggleMenu} className=" focus:outline-none">
+                                    <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                                    </svg>
+                                </button>
+                            </div>
                         </div>
                     </div>
-                    <div className="flex-none font-medium">
-                        <ul className="menu flex items-center justify-center text-md gap-5 menu-horizontal px-1">
-                            <Link to="/hotels">Destination</Link>
-                            <Link to="contact-us">Contact</Link>
-                            {
-                                user ? <div className='flex items-center justify-center gap-4'>
-                                    {
-                                        user?.photoURL ? <div className='flex items-center justify-center gap-2'>
-                                            <img className='w-6 rounded-full' src={user.photoURL} alt="" />
-                                            <span>{user?.displayName.slice(0,13)}</span>
-                                        </div> : <div className='flex items-center justify-center gap-2'>
-                                            <span className='uppercase px-2 py-1 w-8 bg-orange-400 rounded-full text-center '>{user?.displayName?.slice(0, 1)}</span>
-                                            <span>{user?.displayName}</span>
+                    <div className={`lg:hidden ${menuOpen ? 'block' : 'hidden'}`}>
+                        <ul className="flex flex-col items-center gap-5 text-md font-medium py-4">
+                            <li><Link to="/hotels" className=" hover:text-orange-600">Destinations</Link></li>
+                            <li><Link to="/contact-us" className=" hover:text-orange-600">Contact</Link></li>
+                            {user ? (
+                                <div className="flex flex-col items-center gap-4">
+                                    {user.photoURL ? (
+                                        <div className="flex items-center gap-2">
+                                            <img className="w-8 h-8 rounded-full" src={user.photoURL} alt="User Avatar" />
+                                            <span className="">{user.displayName.slice(0, 13)}</span>
                                         </div>
-                                    }
-                                    <button className='bg-[#F9A51A] text-black px-4 rounded py-2 ' onClick={logOutUser}>Logout</button>
+                                    ) : (
+                                        <div className="flex items-center gap-2">
+                                            <span className="uppercase px-2 py-1 w-8 bg-orange-400 rounded-full text-center text-gray-800">{user.displayName?.slice(0, 1)}</span>
+                                            <span className="">{user.displayName}</span>
+                                        </div>
+                                    )}
+                                    <button onClick={logOutUser} className="bg-[#F9A51A] text-black px-4 rounded py-2 hover:bg-[#F8B824] transition duration-300 ease-in-out">Logout</button>
                                 </div>
-                                    :
-                                    <Link className='bg-[#F9A51A] text-black px-4 rounded py-1' to="/login">Login</Link>
-                            }
+                            ) : (
+                                <Link to="/login" className="bg-[#F9A51A] text-black px-4 rounded py-1 hover:bg-[#F8B824] transition duration-300 ease-in-out">Login</Link>
+                            )}
                         </ul>
                     </div>
-                </div>
+
+                </nav>
                 {/* Banner */}
-                <div className='flex items-center'>
-                    <div className='w-1/2 p-8'>
-                        <h2 className="text-5xl bebas-neue-regular font-bold mb-4 text-white uppercase">{activeId.title.slice(0, 12)}</h2>
-                        <p className="text-md text-gray-300">{activeId.description.slice(0, 220) + "....."}</p>
+                <div className='lg:flex items-center'>
+                    <div className='lg:w-1/2 lg:p-8 p-2'>
+                        <h2 className="lg:text-5xl text-3xl md:text-4xl lg:bebas-neue-regular font-bold mb-4 uppercase">{activeId?.title.slice(0, 12)}</h2>
+                        <p className="text-base ">{activeId?.description.slice(0, 220) + "....."}</p>
                         <div className='mt-5'>
                             <Link state={activeId} to={'/booking-date'} className='bg-[#F9A51A] text-black px-6 rounded-sm font-semibold py-2'>Booking</Link>
                         </div>
                     </div>
-                    <div className='w-1/2 flex items-center' style={{ height: 'calc(100vh - 68px)' }}>
+                    <div className='lg:w-1/2 lg:px-0 px-2 flex items-center' style={{ height: 'calc(100vh - 68px)' }}>
                         <Swiper
                             slidesPerView={3}
                             spaceBetween={30}

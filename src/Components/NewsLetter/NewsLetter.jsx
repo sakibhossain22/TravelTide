@@ -1,10 +1,10 @@
 
 const NewsLetter = () => {
     return (
-        <div className="flex mx-5 py-8 items-center justify-evenly gap-5">
+        <div className="flex lg:flex-row flex-col mx-5 py-8 items-center justify-evenly gap-5">
             <div className="border rounded-lg px-4 border-orange-600">
                 <h1 className="text-3xl my-2 font-bold">Newsletter</h1>
-                <p className="my-2 text-gray-600">Get your daily dose of travel news & tips. Sign up today!</p>
+                <p className="my-2 ">Get your daily dose of travel news & tips. Sign up today!</p>
                 <form>
                     <input className="w-full bg-gray-100 px-4 py-3 my-2" type="text" name="name" id="" placeholder="Your Name"/>
                     <input className="w-full bg-gray-100 px-4 py-3 my-2" type="email" name="name" id="" placeholder="Your E-mail"/>

@@ -101,34 +101,43 @@ const Cart = () => {
         <div>
             <SharedNav />
             {/* Cart Items */}
-            <div className="my-5 gap-4 mx-3 grid grid-cols-12">
+            <div className="my-5 gap-4 mx-3 lg:grid grid-cols-12">
                 {/* Hotel */}
-                <div className="col-span-8 h-screen overflow-y-auto pr-4" style={{ height: 'calc(100vh - 120px)' }}>
+                <div className="col-span-8 lg:h-screen-120 overflow-y-auto lg:pr-4">
                     {hotels?.map((hotel) => (
-                        <div key={hotel?._id} className="bg-gray-200 mb-4 rounded-lg shadow-md transition duration-300 ease-in-out transform flex items-center justify-center">
+                        <div key={hotel?._id} className="bg-gray-200 mb-4 rounded-lg shadow-md transition duration-300 ease-in-out transform lg:flex items-center justify-center">
                             <div className="lg:flex-1 flex md:flex-1">
                                 <img className="w-32 h-40 rounded" src={hotel?.imageLink} alt={hotel?.title} />
                                 <div>
-                                    <h1 className="lg:text-xl md:text-2xl mx-2 font-semibold mb-2">{hotel?.title}</h1>
-                                    <div className="flex gap-4 mb-3">
-                                        {hotel?.amenities?.map((item, idx) => (
-                                            <div key={idx} className="rounded px-2 text-sm text-center">
-                                                <span className="font-semibold">{item}</span>
-                                            </div>
-                                        ))}
+                                    <div>
+                                        <h1 className="lg:text-xl md:text-2xl mx-2 font-semibold mb-2">{hotel?.title}</h1>
+                                        <div className="lg:flex hidden gap-4 mb-3">
+                                            {hotel?.amenities?.map((item, idx) => (
+                                                <div key={idx} className="rounded px-2 text-sm text-center">
+                                                    <span className="font-semibold">{item}</span>
+                                                </div>
+                                            ))}
+                                        </div>
+                                        {hotel?.toDate ? (
+                                            <p className="mx-2 font-bold">
+                                                Check in: <span className="font-semibold">{hotel?.toDate} To {hotel?.fromDate}</span>
+                                            </p>
+                                        ) : (
+                                            <p className="mx-2 font-bold">
+                                                Check In: <span className="font-semibold">{hotel?.orderDate}</span>
+                                            </p>
+                                        )}
                                     </div>
-                                    {hotel?.toDate ? (
-                                        <p className="mx-2 font-bold">
-                                            Check in: <span className="font-semibold">{hotel?.toDate} To {hotel?.fromDate}</span>
-                                        </p>
-                                    ) : (
-                                        <p className="mx-2 font-bold">
-                                            Check In: <span className="font-semibold">{hotel?.orderDate}</span>
-                                        </p>
-                                    )}
+                                    <div className="mx-5 lg:hidden gap-2 justify-between flex lg:flex-col flex-row ">
+                                        <span className="text-base font-semibold">1 Night</span>
+                                        <p className="text-[#FF5733] text-xl font-bold mb-2">{hotel?.price?.slice(0, 3) + '.00'}</p>
+                                        <button onClick={() => handleCartDelete(hotel?._id)}>
+                                            <BiTrash className="text-2xl text-center"></BiTrash>
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
-                            <div className="mx-5 flex flex-col items-center">
+                            <div className="mx-5 lg:flex hidden lg:flex-col flex-row items-center">
                                 <span className="text-lg font-semibold">1 Night</span>
                                 <p className="text-[#FF5733] text-xl font-bold mb-2">{hotel?.price?.slice(0, 3) + '.00'}</p>
                                 <button onClick={() => handleCartDelete(hotel?._id)}>
