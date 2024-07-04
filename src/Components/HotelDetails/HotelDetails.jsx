@@ -11,12 +11,13 @@ import SharedNav from "../SharedNav/SharedNav";
 import { AuthContext } from "../AuthProvider/AuthProvider";
 import Swal from "sweetalert2";
 import moment from "moment";
+import useCart from "../Hooks/useCart";
 
 const HotelDetails = () => {
+    const { data, refetch } = useCart();
     const { user, logOutUser } = useContext(AuthContext);
     const location = useLocation()
     const {toDate, fromDate } = location.state || {}
-    console.log(toDate, fromDate);
     const axiosSecure = useAxiosSecure();
     const { uniqueId } = useParams();
     const [hotel, setHotel] = useState(null);
@@ -71,8 +72,8 @@ const HotelDetails = () => {
         const roomData = { ...room,toDate : toDate, fromDate : fromDate , user: user?.email, orderDate : moment().format('ll') };
         try {
             const response = await axiosSecure.post('/cart', roomData);
-            console.log(response.data);
             if (response?.data?.insertedId) {
+                refetch()
                 return Swal.fire({
                     icon: "success",
                     title: "Successfully Added To Cart",

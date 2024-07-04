@@ -1,14 +1,16 @@
 import { useContext, useEffect, useState } from "react";
 import useAxiosSecure from "../AxiosSecure/useAxiosSecure";
 import { Link, useLocation } from "react-router-dom";
-import objects from '../../assets/OBJECTS.png'
 import { AuthContext } from "../AuthProvider/AuthProvider";
-import star from '../../assets/star.png'
 import SharedNav from "../SharedNav/SharedNav";
+import useCart from "../Hooks/useCart";
+import Swal from "sweetalert2";
+import moment from "moment";
 const Hotels = () => {
     const { user, logOutUser } = useContext(AuthContext)
+    const { data, refetch } = useCart();
     const location = useLocation()
-    console.log(location);
+    const {toDate, fromDate } = location.state || {}
     const axiosSecure = useAxiosSecure()
     const [hotels, setHotels] = useState()
 
@@ -34,6 +36,38 @@ const Hotels = () => {
         fetchHotels();
     }, [axiosSecure, location?.state?.select2]);
 
+    const handleBookRoom = async (room) => {
+        const roomData = { ...room,toDate : toDate, fromDate : fromDate , user: user?.email, orderDate : moment().format('ll') };
+        try {
+            const response = await axiosSecure.post('/cart', roomData);
+            if (response?.data?.insertedId) {
+                refetch()
+                return Swal.fire({
+                    icon: "success",
+                    title: "Successfully Added To Cart",
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+            }
+        } catch (error) {
+            console.error('Error booking room:', error);
+            if(error.response.status === 400) {
+                return Swal.fire({
+                    icon: "error",
+                    title: "Your Already Booked This Room",
+                    showConfirmButton: false,
+                    timer: 1500
+                  });
+            } else {
+                return Swal.fire({
+                    icon: "error",
+                    title: error.message,
+                    showConfirmButton: false,
+                    timer: 1500
+                  });
+            }
+        }
+    };
 
     if (!hotels) return <div className="flex items-center justify-center h-screen">
         <span className="loading loading-spinner loading-lg"></span>
@@ -48,13 +82,13 @@ const Hotels = () => {
                 {
                     location?.state?.select2 && <h1 className="text-xl mb-3">Hotels In <span className="font-bold">{location.state.select2}</span></h1>
                 }
-                <div className="mx-5 grid gap-10 lg:grid-cols-2 md:grid-cols-2 items-center justify-between">
+                <div className="mx-5 grid gap-10 lg:grid-cols-3 md:grid-cols-2 items-center justify-between">
                     {
                         hotels?.map(hotel => {
                             return <div key={hotel._id}>
                                 <div className="border rounded-md">
                                     <div>
-                                        <img className="rounded mb-3 h-80 w-full" src={hotel?.imageLink} alt="" />
+                                        <img className="rounded mb-3 h-60 w-full" src={hotel?.imageLink} alt="" />
                                     </div>
                                     <div className="px-2">
                                         <div className="border-b">
@@ -81,7 +115,7 @@ const Hotels = () => {
                                         </div>
                                         <h1 className="my-4 text-gray-600">{hotel?.description.slice(0, 124)}</h1>
                                         <div className="my-4 flex gap-3">
-                                            <button className="w-full hover:bg-orange-300 bg-orange-400 px-6 py-2 rounded text-white font-bold">Book Now</button>
+                                            <button onClick={() => handleBookRoom(hotel)} className="w-full hover:bg-orange-300 bg-orange-400 px-6 py-2 rounded text-white font-bold">Book Now</button>
                                             <Link state={location?.state} to={`/hotel/${hotel?.uniqueId}`}>
                                                 <button className="w-full hover:bg-blue-300 bg-blue-400 px-10 py-2 rounded text-white font-bold">Details</button>
                                             </Link>

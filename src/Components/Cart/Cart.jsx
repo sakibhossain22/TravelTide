@@ -7,6 +7,7 @@ import Lottie from "lottie-react";
 import { BiTrash } from "react-icons/bi";
 import useCart from "../Hooks/useCart";
 import Swal from "sweetalert2";
+import { Link } from "react-router-dom";
 
 const Cart = () => {
     const axiosSecure = useAxiosSecure();
@@ -92,8 +93,10 @@ const Cart = () => {
     };
 
     if (!data?.length) return (
-        <div className="flex h-full items-center justify-center">
+        <div className="flex flex-col h-full items-center justify-center">
             <Lottie animationData={nodata} />
+            <p className="text-xl font-bold my-2">Please Make Order</p>
+            <Link to={'/'} className="bg-orange-500 text-white px-6 rounded py-2">Home</Link>
         </div>
     );
 

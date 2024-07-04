@@ -82,7 +82,7 @@ const Register = () => {
             <div>
 
             </div>
-            <div className="w-2/6 mx-auto flex flex-col items-center justify-center h-screen">
+            <div className="lg:w-2/6 lg:mx-auto mx-2 flex flex-col items-center justify-center h-screen">
                 <form onSubmit={handleRegister} className="border px-8 py-5">
                     <h1 className="text-2xl font-bold mb-8">Register Now</h1>
                     {
